@@ -1,0 +1,29 @@
+.pro_page {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: var(--page-font-size);
+  box-sizing: content-box;
+  z-index: 10;
+  padding: var(--page-font-size);
+
+  *:not(p):has(+ p) {
+    margin-bottom: 1.2rem
+  }
+
+  *:not(canvas) {
+    z-index: 10;
+  }
+
+  > div[data-canvas] {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+
+  @media(max-width: 540px) {
+    grid-auto-flow: row;
+    justify-content: start
+  }
+}

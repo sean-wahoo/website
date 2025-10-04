@@ -1,0 +1,74 @@
+@use '@/app/colors.scss' as c;
+
+
+.block {
+  border: 3px solid c.$cambridge_blue;
+  text-align: center;
+  display: block;
+  padding: 14px;
+  width: fit-content;
+  user-select: none;
+  translate: 0 0;
+  transition:
+    0.3s cubic-bezier(.2, .96, .64, .97);
+  transition-property: translate;
+
+  position: relative;
+
+  &:has(+ article) {
+    border-bottom: none;
+  }
+
+  &.clickable {
+    &:focus-within,
+    &:hover,
+    &.block__active {
+      translate: 0 -12px;
+      cursor: pointer;
+    }
+
+    &:active {
+      scale: 0.975;
+      border-color: white;
+      transition-property: scale;
+      transition-duration: 0.1s;
+    }
+  }
+}
+
+.outline {
+  position: absolute;
+  opacity: 0;
+  // width: 100%;
+  // height: 100%;
+  // left: 0;
+  // top: 0;
+  // z-index: -1;
+  background: transparent;
+  border: 3px solid white;
+  
+  &.animate {
+    animation-name: block-click-effect;
+    animation-duration: 1.2s;
+    animation-timing-function: cubic-bezier(.2, .96, .64, .97);
+    animation-fill-mode: forwards;
+  }
+}
+@keyframes block-click-effect {
+  from {
+    opacity: 1;
+    width: var(--block-width);
+    height: var(--block-height);
+    top: var(--block-top);
+    left: var(--block-left);
+  }
+  to {
+    opacity: 0;
+    width: calc(var(--block-width) + var(--outline-offset));
+    height: calc(var(--block-height) + var(--outline-offset));
+    top: calc(var(--block-top) - calc(var(--outline-offset) / 2));
+    left: calc(var(--block-left) - calc(var(--outline-offset) / 2));
+    // top: -12px;
+    // left: -12px;
+  }
+}
