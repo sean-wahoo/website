@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './canvas.module.scss'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-import { AsciiEffect, ClearMaskPass, ClearPass, ColorifyShader, DotScreenPass, DotScreenShader, EffectComposer, GammaCorrectionShader, MaskPass, OrbitControls, OutputPass, RenderPass, ShaderPass, SobelOperatorShader, UnrealBloomPass, VertexNormalsHelper, VertexTangentsHelper } from 'three/examples/jsm/Addons.js';
+import { AsciiEffect, ClearMaskPass, ClearPass, ColorifyShader, DotScreenPass, DotScreenShader, EffectComposer, GammaCorrectionShader, FilmPass, MaskPass, OrbitControls, OutputPass, RenderPass, ShaderPass, SobelOperatorShader, UnrealBloomPass, VertexNormalsHelper, VertexTangentsHelper, GlitchPass } from 'three/examples/jsm/Addons.js';
 import PickHelper from './utils';
 
-const ANIMATIONS: [{ objName: string, aniName: string }] = [
-  { objName: 'Object_7', aniName: 'GLTF_created_0Action' }
-]
+// const ANIMATIONS: [{ objName: string, aniName: string }] = [
+//   { objName: 'Object_7', aniName: 'GLTF_created_0Action' }
+// ]
 
-const Canvas: React.FC<{ fileName: string, objectNames?: [string] }> = ({ fileName, objectNames }) => {
+const Canvas: React.FC<{ fileName: string, sceneName?: string }> = ({ fileName, sceneName }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const loader = new GLTFLoader()
   const scene = new THREE.Scene();
@@ -25,6 +25,15 @@ const Canvas: React.FC<{ fileName: string, objectNames?: [string] }> = ({ fileNa
 
   const clock = new THREE.Clock();
 
+  interface MaskRenderTarget {
+    target: THREE.WebGLRenderTarget,
+    scene?: THREE.Scene,
+    camera?: THREE.Camera,
+    composer?: THREE.EffectComposer
+  }
+
+  const renderTargets = new Map<string, MaskRenderTarget>()
+
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined' || !canvasRef.current) {
       return;
@@ -36,11 +45,10 @@ const Canvas: React.FC<{ fileName: string, objectNames?: [string] }> = ({ fileNa
 
     const canvasRect = canvasRef.current.getBoundingClientRect()
 
-    const fov = 75, aspect = 2, near = 0.1, far = 20;
+    const fov = 75, aspect = 2, near = 0.1, far = 12;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
     camera.position.z = 3;
-    camera.lookAt(0, 0, 0)
-
+    camera.position.y = 5
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true;
     scene.add(camera)
@@ -55,51 +63,68 @@ const Canvas: React.FC<{ fileName: string, objectNames?: [string] }> = ({ fileNa
     let mixer: THREE.AnimationMixer | undefined;
     loader.load(`/models/${fileName}`, gltf => {
       const glbRoot = gltf.scene
-      const models: { [key: string]: THREE.Object3D } = {};
-      console.log({ gltf })
-      glbRoot.children.forEach(obj => {
-        console.log({ obj })
-        if ('animations' in obj && obj.animations.length) {
-          console.log("yeyey", obj)
-        }
-        if (obj.isObject3D) {
-          models[obj.name] = obj
-          scene.add(obj)
-        }
-      })
-      if (gltf.animations.length) {
-        const animationsToUse = gltf.animations.filter(gltfA => ANIMATIONS.map(a => a.aniName === gltfA.name));
-        for (const a of animationsToUse) {
-          const modelKeys = Object.keys(models)
-          const link = ANIMATIONS.find(constA => constA.aniName === a.name && modelKeys.includes(constA.objName))
-          if (!link) continue;
-          const model = models[link.objName]
-          mixer = new THREE.AnimationMixer(model);
 
-          const animationAction = mixer.clipAction(a)
-          animationAction.play()
-          console.log({ animationAction, link })
-        }
-      }
-
-      // const animationAction = mixer.clipAction()
-
-
-      // scene.add(gltf.scene);
-      return;
-      const objsToAdd: THREE.Object3D[] = [];
-      for (const model of models) {
-        model.traverse(obj => {
-          if ('material' in obj && 'isMesh' in obj && obj.isMesh) {
-            objsToAdd.push(obj)
+      const mainObjectName = "lil_dood"
+      if(mainObjectName) {
+        const mainObject = glbRoot.getObjectByName(mainObjectName)
+        let mainObjectMesh;
+        mainObject.traverse(obj => {
+          if('isMesh' in obj && obj.isMesh) {
+            mainObjectMesh = obj
           }
         })
+        const rtTarget = new THREE.WebGLRenderTarget()
+        const mainObjectMaterial = new THREE.MeshBasicMaterial({
+          map: rtTarget.texture
+        })
+
+        const rtScene = new THREE.Scene(), rtCamera = new THREE.Camera()
+
+        const targetComposer = new EffectComposer(renderer, rtTarget)
+        targetComposer.addPass(new RenderPass(rtScene, rtCamera))
+
+        const proceduralMat = new THREE.ShaderMaterial({
+          vertexShader: document.querySelector("#procedural-vert").textContext?.trim(),
+          fragmentShader: document.querySelector("#noiseRandom3D-frag").textContext?.trim()
+        })
+        const meshMat = new THREE.MeshPhongMaterial({
+          map: rtTarget.texture
+        })
+        // const postCamera = new THREE.OrthogonalCamera(-1, 1, 1, -1, 0, 1)
+      
+        // const glitchPass = new GlitchPass()
+        // glitchPass.goWild = true
+        // targetComposer.addPass(glitchPass)
+        //
+
+        const outputPass = new OutputPass()
+        targetComposer.addPass(outputPass)
+
+        const postPlane = new THREE.PlaneGeometry(2, 2)
+        const postMesh = new THREE.Mesh(postPlane, proceduralMat)
+        rtScene.add(postMesh)
+
+        renderTargets.set(mainObjectName, {
+          target: rtTarget,
+          composer: targetComposer,
+          scene: rtScene,
+          camera: rtCamera
+        })
+
+        console.log({ 1: mainObjectMesh.material, proceduralMat })
+
+        mainObjectMesh.material = meshMat
+      }
+      if (gltf.animations.length) {
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        const action = mixer.clipAction(gltf.animations[0])
+        action.timeScale = 3
+        action.play()
       }
 
-      scene.add(...objsToAdd)
+      scene.add(gltf.scene);
+
     })
-    //
-    //
     //   loader.load('/models/dood_at_desk.glb', gltf => {
     //     const root = gltf.scene;
     //
@@ -141,6 +166,9 @@ const Canvas: React.FC<{ fileName: string, objectNames?: [string] }> = ({ fileNa
     //     // renderer.setRenderTarget(bodyRenderTarget)
     //     // human.material.blending = THREE.NoBlending
     //   })
+    // const maskPass = 
+
+    // const composer = new EffectComposer(renderer)
 
     const canvas = renderer.domElement
     function getCanvasRelativePosition(event: MouseEvent) {
@@ -174,6 +202,19 @@ const Canvas: React.FC<{ fileName: string, objectNames?: [string] }> = ({ fileNa
         camera.updateProjectionMatrix()
       }
 
+      if(renderTargets.size > 0) {
+        renderTargets.forEach((obj, key) => {
+          // console.log({ obj })
+          renderer.setRenderTarget(obj.target);
+
+          const scene = obj.scene ?? new THREE.Scene();
+          const camera = obj.camera ?? new THREE.Camera();
+          renderer.render(scene, camera)
+          obj.composer?.render?.()
+
+          renderer.setRenderTarget(null)
+        })
+      }
       controls.update()
       renderer.render(scene, camera)
     }
@@ -190,14 +231,14 @@ const Canvas: React.FC<{ fileName: string, objectNames?: [string] }> = ({ fileNa
 
     requestRenderIfNotRequested()
     const animate = () => {
-      console.log('hehe')
-      requestAnimationFrame(animate)
+      // console.log('hehe')
       controls.update()
-      mixer?.update(clock.getDelta())
-
-      render(clock.getDelta())
+      const d = clock.getDelta()
+      mixer?.update(d)
+      render(0);
     }
-    animate()
+    renderer.setAnimationLoop(animate)
+    requestAnimationFrame(animate)
   }, [])
 
   return <canvas className={styles.canvas} ref={canvasRef} />
