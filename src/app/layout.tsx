@@ -74,18 +74,6 @@ export default function RootLayout({
               `
             }
           </script>
-          <script type="x-shader/x-vertex" id="procedural-vert">
-          {
-            `
-            varying vec2 vUv;
-
-            void main() {
-              vUv = uv;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-            `
-          }
-          </script>
           <script id="noiseRandom3D-frag" type="x-shader/x-fragment">
             {
               `
