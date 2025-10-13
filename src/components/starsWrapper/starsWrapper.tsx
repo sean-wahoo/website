@@ -271,7 +271,7 @@ const StarsWrapper: React.FC<React.HTMLProps<HTMLSpanElement>> = (props) => {
         starHeight = "4px";
       }
       const starX = star.x + width / 4;
-      const starY = star.y - height / 2;
+      const starY = star.y - height / 4;
 
       const starEl = (
         <>
