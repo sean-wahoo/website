@@ -1,0 +1,17 @@
+@use "sass:map";
+
+$mobile-width: 712px;
+$breakpoints: (
+  "mobile": $mobile-width,
+);
+
+@function _mq_string($v) {
+  $width: map.get($breakpoints, $v);
+  @return "max-width: #{$width}";
+}
+
+@mixin responsive($size) {
+  @media (_mq_string($size)) {
+    @content;
+  }
+}

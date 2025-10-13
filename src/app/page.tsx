@@ -1,12 +1,9 @@
-import Image from "next/image";
 import styles from "./page.module.scss";
 import { unstable_ViewTransition as ViewTransition } from "react";
-import Canvas from '@/components/three/canvas'
 import Block from "@/components/block";
-import { redirect } from "next/navigation";
+import { NextPage } from "next";
 
-
-const Home: React.FC<React.PropsWithChildren> = ({ children }) => {
+const Home: NextPage = () => {
   return (
     <ViewTransition>
       <section className={styles.button_section}>
@@ -16,15 +13,10 @@ const Home: React.FC<React.PropsWithChildren> = ({ children }) => {
           clickable={true}
           href="/pro"
         />
-        <Block
-          text="fun stuff"
-          id="fun"
-          clickable={true}
-          href="/fun"
-        />
+        <Block text="fun stuff" id="fun" clickable={true} href="/fun" />
       </section>
     </ViewTransition>
   );
-}
+};
 
 export default Home;

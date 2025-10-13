@@ -1,14 +1,13 @@
-import { NextPage } from "next/types"
-import { unstable_ViewTransition as ViewTransition } from "react"
+"use client";
+import { NextPage } from "next/types";
+import Markdown from "@/mdx/fun.mdx";
 
 const FunPage: NextPage = () => {
   return (
-    <ViewTransition>
-      <article id="fun-page" style={{ viewTransitionName: "fun-page" }}>
-        fun page
-      </article>
-    </ViewTransition>
-  )
-}
+    <article id="fun-page" style={{ viewTransitionName: "fun-page" }}>
+      <Markdown />
+    </article>
+  );
+};
 
-export default FunPage
+export default FunPage;

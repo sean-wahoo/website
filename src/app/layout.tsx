@@ -1,19 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Funnel_Sans, Funnel_Display } from "next/font/google";
-import "./globals.scss";
-import styles from './page.module.scss'
+import { Funnel_Sans, Funnel_Display } from "next/font/google";
+import "@/styling/globals.scss";
+import styles from "./page.module.scss";
 import localFont from "next/font/local";
 import { ViewTransitions } from "next-view-transitions";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import StarsWrapper from "@/components/starsWrapper/starsWrapper";
+import Providers from "@/components/providers";
+import WebVitals from "@/components/utils/web-vitals";
+import Socials from "@/components/socials/socials";
 
 const funnelSans = Funnel_Sans({
   variable: "--font-funnel-sans",
@@ -25,11 +19,10 @@ const funnelDisplay = Funnel_Display({
   subsets: ["latin"],
 });
 
-
 const cozetteFont = localFont({
-  src: './CozetteVector.ttf',
-  display: 'swap',
-})
+  src: "../../public/fonts/CozetteVector.ttf",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -41,61 +34,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <ViewTransitions>
-      <html lang="en">
-        <head>
-          <script type="x-shader/x-vertex" id="vertexshader">
-            {
-              `
-              varying vec2 vUv;
-
-              void main() {
-                vUv = uv;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-              }
-              `
-            }
-          </script>
-          <script type="x-shader/x-fragment" id="fragmentshader">
-            {
-              `
-              uniform sampler2D baseTexture;
-              uniform sampler2D bloomTexture;
-
-              varying vec2 vUv;
-
-              void main() {
-
-                gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
-
-              }
-              `
-            }
-          </script>
-          <script id="noiseRandom3D-frag" type="x-shader/x-fragment">
-            {
-              `
-              #include <common>
-
-              varying vec2 vUv;
-
-              void main() {
-                vec2 rand2 = vec2( rand( vUv ), rand( vUv + vec2( 0.4, 0.6 ) ) );
-                gl_FragColor.xyz = mix( mix( vec3( 1.0, 1.0, 1.0 ), vec3( 0.0, 0.0, 1.0 ), rand2.x ), vec3( 0.0 ), rand2.y );
-                gl_FragColor.w = 1.0;
-              }
-              `
-            }
-          </script>
-        </head>
-        <body className={[geistSans.variable, geistMono.variable, funnelSans.variable, funnelDisplay.variable].join(' ')}>
-          <main className={[styles.layout, cozetteFont.className].join(' ')}>
-            {children}
-          </main>
-        </body>
-      </html>
+      <Providers>
+        <html lang="en">
+          <body
+            className={[funnelSans.variable, funnelDisplay.variable].join(" ")}
+          >
+            <WebVitals />
+            <StarsWrapper />
+            <main className={[styles.layout, cozetteFont.className].join(" ")}>
+              {children}
+            </main>
+            <footer className={styles.socials}>
+              <Socials />
+            </footer>
+          </body>
+        </html>
+      </Providers>
     </ViewTransitions>
   );
 }

@@ -1,29 +1,22 @@
+@use "@/styling/responsive.scss" as *;
+@use "sass:map";
+
 .pro_page {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: flex-start;
-  justify-content: center;
-  font-size: var(--page-font-size);
-  box-sizing: content-box;
-  z-index: 10;
-  padding: var(--page-font-size);
-
-  *:not(p):has(+ p) {
-    margin-bottom: 1.2rem
-  }
-
-  *:not(canvas) {
-    z-index: 10;
-  }
-
   > div[data-canvas] {
     display: flex;
     flex-flow: row wrap;
-  }
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    margin: 1rem auto 0;
 
-
-  @media(max-width: 540px) {
-    grid-auto-flow: row;
-    justify-content: start
+    > :not(canvas) {
+      flex: 1 1 50%;
+      order: 0;
+      @include responsive("mobile") {
+        order: 1;
+      }
+    }
   }
 }

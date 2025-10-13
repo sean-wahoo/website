@@ -1,17 +1,39 @@
-import Canvas from '@/components/three/canvas'
+import './styles.scss'
+import Canvas from "@/components/three/canvas"
 
-<div style={{ display: 'none' }}>
-# vim:ft=markdown
-## fuck you
-</div>
 <>
-# hello, i'm sean.
-## i'm a (web) developer and i really freaking like to code.
+  # hello, i'm sean.
+  ## i'm a developer and i really freaking like to code.
 </>
 
+<br />
+<div data-inline>
+i've been obsessed with computers for years, getting my first little toshiba
+netbook around 2010. i started programming in high school and found a
+particular passion for web development.
+</div>
 <div data-canvas>
-    i've been obsessed with computers for years, getting my first little toshiba netbook around 2010.
-    i started programming in high school and found a particular passion for web development.
-    <Canvas fileName="dood_no_sway.glb" />
+  <Canvas fileName="dood_no_sway.glb" order={0} sceneName="dood_at_desk" />
+  i specialize in node.js and frameworks like next.js and meteor with extensive
+  experience in javascript/typescript, css/scss and, less obsessively, c++ and
+  lua. i'm trying to always be learning something, and i've got my future
+  sights on game development and embedded programming.
+</div>
+<div data-canvas>
+  i live in a bunker 2000 miles under the ocean (my house) with this small
+  orange thing (cat) named merlin. as merlin grows, so does his malicious intent.
+  he may end up killing me and taking my place one day. there will be no way to
+  tell.
+  <Canvas
+    fileName="dood_petting_cat.glb"
+    order={1}
+    sceneName="dood_petting_cat"
+  />
 </div>
 
+<div data-inline>
+### want to see some of my cool stuff? [click this here link.](/fun)
+### want to contact me? [click this other link.](mailto:seaniscoding@proton.me)
+<br />
+##### or click those little icons down there
+</div>

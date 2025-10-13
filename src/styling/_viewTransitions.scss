@@ -1,0 +1,16 @@
+@use "@/styling/vars.scss" as v;
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-group(*) {
+  animation-timing-function: v.$cubic_bezier;
+}
+
+::view-transition-new(tab-page-content) {
+  animation-direction: both;
+  animation-name: page-load-in;
+  animation-delay: 0.3s;
+}

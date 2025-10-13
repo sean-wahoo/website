@@ -1,5 +1,5 @@
-import * as THREE from 'three'
-import { Object3D, Object3DNode } from 'three/webgpu';
+import * as THREE from "three";
+import { Object3D, Object3DNode } from "three/webgpu";
 
 export default class PickHelper {
   raycaster: THREE.Raycaster;
@@ -7,18 +7,23 @@ export default class PickHelper {
   pickedObjectSavedColor: number;
 
   constructor() {
-    this.raycaster = new THREE.Raycaster()
+    this.raycaster = new THREE.Raycaster();
     this.pickedObject = null;
-    this.pickedObjectSavedColor = 0
+    this.pickedObjectSavedColor = 0;
   }
-  pick(normalPos: THREE.Vector2, scene: THREE.Scene, camera: THREE.Camera, time: number) {
+  pick(
+    normalPos: THREE.Vector2,
+    scene: THREE.Scene,
+    camera: THREE.Camera,
+    time: number,
+  ) {
     if (this.pickedObject) {
-      this.pickedObject = null
+      this.pickedObject = null;
     }
-    this.raycaster.setFromCamera(normalPos, camera)
-    const intersectedObjs = this.raycaster.intersectObjects(scene.children)
+    this.raycaster.setFromCamera(normalPos, camera);
+    const intersectedObjs = this.raycaster.intersectObjects(scene.children);
     if (intersectedObjs.length) {
-      this.pickedObject = intersectedObjs[0].object
+      this.pickedObject = intersectedObjs[0].object;
     }
   }
 }

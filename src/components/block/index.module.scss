@@ -1,7 +1,9 @@
-@use '@/app/colors.scss' as c;
-
+@use "@/styling/colors.scss" as c;
+@use "@/styling/vars.scss" as v;
 
 .block {
+  position: relative;
+  z-index: 1;
   border: 3px solid c.$cambridge_blue;
   text-align: center;
   display: block;
@@ -9,15 +11,9 @@
   width: fit-content;
   user-select: none;
   translate: 0 0;
-  transition:
-    0.3s cubic-bezier(.2, .96, .64, .97);
+  transition: 0.3s v.$cubic_bezier;
   transition-property: translate;
-
-  position: relative;
-
-  &:has(+ article) {
-    border-bottom: none;
-  }
+  background-color: c.$bg;
 
   &.clickable {
     &:focus-within,
@@ -36,24 +32,6 @@
   }
 }
 
-.outline {
-  position: absolute;
-  opacity: 0;
-  // width: 100%;
-  // height: 100%;
-  // left: 0;
-  // top: 0;
-  // z-index: -1;
-  background: transparent;
-  border: 3px solid white;
-  
-  &.animate {
-    animation-name: block-click-effect;
-    animation-duration: 1.2s;
-    animation-timing-function: cubic-bezier(.2, .96, .64, .97);
-    animation-fill-mode: forwards;
-  }
-}
 @keyframes block-click-effect {
   from {
     opacity: 1;
@@ -68,7 +46,5 @@
     height: calc(var(--block-height) + var(--outline-offset));
     top: calc(var(--block-top) - calc(var(--outline-offset) / 2));
     left: calc(var(--block-left) - calc(var(--outline-offset) / 2));
-    // top: -12px;
-    // left: -12px;
   }
 }

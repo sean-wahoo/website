@@ -1,0 +1,80 @@
+@use "sass:math";
+@use "@/styling/colors.scss" as c;
+
+.stars_wrapper {
+  box-sizing: content-box;
+  max-width: 100vw;
+  max-height: 100vh;
+
+  .stars {
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    font-size: 1.2rem;
+    > .star {
+      position: absolute;
+      z-index: 0;
+      opacity: 0;
+      transition: all ease-out;
+      animation:
+        fade-in 1s ease forwards,
+        twinkle 4s ease forwards infinite;
+
+      &:hover {
+        animation-play-state: paused;
+        transition-duration: 0.3s;
+        // FUCK YOU FUCK YOU FUCK YOU FUCK YOU
+        opacity: 1 !important;
+        scale: 2.4;
+      }
+    }
+    > .star_tooltip {
+      opacity: 0;
+      user-select: none;
+      z-index: 0;
+
+      background-color: c.$bg;
+
+      border: 1px solid c.$cambridge_blue;
+      font-family: cozetteFont;
+      position: absolute;
+      display: flex;
+      flex-flow: column nowrap;
+      translate: 0 -1rem;
+      padding: 0.2rem;
+
+      transition-property: opacity, translate;
+      transition: 0.2s ease 0s;
+      z-index: -1;
+
+      &.active {
+        z-index: 20;
+        transition-delay: 0.6s;
+        opacity: 1;
+        translate: 0 0;
+      }
+    }
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 0.2;
+  }
+}

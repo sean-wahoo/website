@@ -1,42 +1,46 @@
+@use "@/styling/colors.scss" as c;
+
 .layout {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-
   display: flex;
   align-items: flex-start;
-  min-height: 100svh;
   padding: 1rem;
-  max-width: 1024px;
+  max-width: 936px;
   margin: auto;
   gap: 64px;
+  height: 100%;
+  flex-grow: 1;
 
   &:has(.button_section) {
     justify-content: center;
-    align-items: center
+    align-items: center;
   }
-  // font-family: var(--font-geist-sans);
-}
 
-@media (prefers-color-scheme: dark) {
-  .layout {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
+  > .button_section {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 32px;
+    transform-origin: center center;
+    width: fit-content;
   }
 }
 
-.button_section {
+footer.socials {
   display: flex;
-  flex-flow: row wrap;
+  width: 100%;
+  margin-inline: auto;
   justify-content: center;
-  gap: 32px;
-  transform-origin: center center;
-  width: fit-content
+  padding: 0.8rem;
+  column-gap: 2rem;
+
+  > a {
+    z-index: 5;
+    cursor: pointer;
+
+    > svg {
+      height: 2.4rem;
+      color: c.$fg;
+      overflow: visible;
+    }
+  }
 }
