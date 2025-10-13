@@ -2,8 +2,8 @@
 @forward "@/styling/_viewTransitions.scss";
 
 :root {
-  --background: #f1fffa;
-  --foreground: #121619;
+  --background: #121619;
+  --foreground: #f1fffa;
   --outline-to-width: 0px;
   --outline-to-height: 0px;
   --page-font-size: clamp(15px, 2vw, 1.25rem);
@@ -44,8 +44,8 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
+// @media (prefers-color-scheme: dark) {
+//   html {
+//     color-scheme: dark;
+//   }
+// }
