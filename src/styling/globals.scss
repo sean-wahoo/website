@@ -1,4 +1,3 @@
-// @forward "colors.scss";
 @forward "@/styling/_viewTransitions.scss";
 
 :root {
@@ -9,15 +8,9 @@
   --page-font-size: clamp(15px, 2vw, 1.25rem);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121619;
-    --foreground: #f1fffa;
-  }
-}
-
 html,
 body {
+  color-scheme: dark;
   min-height: 100svh;
   max-width: 100vw;
   overflow-x: hidden;
@@ -43,9 +36,3 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
-// @media (prefers-color-scheme: dark) {
-//   html {
-//     color-scheme: dark;
-//   }
-// }

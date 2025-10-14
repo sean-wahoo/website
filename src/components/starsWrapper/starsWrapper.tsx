@@ -311,9 +311,15 @@ const StarsWrapper: React.FC<React.HTMLProps<HTMLSpanElement>> = (props) => {
         const parentStarName = (star as HTMLSpanElement).dataset.objectName;
         const tooltip = document.querySelector(
           `span[data-parent-star-name="${parentStarName}"]`,
-        );
+        ) as HTMLElement;
+
         star.addEventListener("mouseover", (e) => {
           if (tooltip) {
+            const tooltipBound = tooltip.getBoundingClientRect();
+            if (tooltipBound.right >= window.innerWidth) {
+              tooltip.style.left =
+                tooltipBound.left - tooltipBound.width + 48 + "px";
+            }
             tooltip.classList.add(styles.active);
           }
         });
