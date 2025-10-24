@@ -1,13 +1,12 @@
 "use client";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import styles from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import { useTransitionRouter } from "next-view-transitions";
 import usePageStore from "@/stores/page";
 
 const Block: React.FC<{
-  text: string;
-  id: string;
+  text?: string;
+  id?: string;
   clickable?: Boolean;
   href?: string;
 }> = ({ text, id, clickable, href }) => {
@@ -75,17 +74,17 @@ const Block: React.FC<{
   };
   return (
     <>
-      <ViewTransition name={id}>
-        <span
-          style={{ viewTransitionName: id }}
-          id={id}
-          className={styles.block}
-          onClick={onClick}
-          ref={blockRef}
-        >
-          <h3>{text}</h3>
-        </span>
-      </ViewTransition>
+      {/* <ViewTransition name={id}> */}
+      <span
+        id={id}
+        className={styles.block}
+        onClick={onClick}
+        ref={blockRef}
+        style={{ viewTransitionName: id }}
+      >
+        <h3>{text}</h3>
+      </span>
+      {/* </ViewTransition> */}
     </>
   );
 };

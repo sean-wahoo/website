@@ -1,5 +1,5 @@
 import styles from "./page.module.scss";
-import { unstable_ViewTransition as ViewTransition } from "react";
+import { ViewTransition } from "react";
 import Block from "@/components/block";
 import { NextPage } from "next";
 

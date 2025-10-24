@@ -1,6 +1,6 @@
 "use client";
-//
-import { Suspense, useEffect, useRef, useState } from "react";
+
+import { useEffect, useRef } from "react";
 import styles from "./canvas.module.scss";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -8,7 +8,6 @@ import {
   ClearMaskPass,
   ClearPass,
   EffectComposer,
-  FilmPass,
   ShaderPass,
   FilmShader,
   OrbitControls,

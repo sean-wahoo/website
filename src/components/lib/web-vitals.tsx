@@ -4,7 +4,7 @@ import { useReportWebVitals } from "next/web-vitals";
 
 const WebVitals = () => {
   useReportWebVitals((metric) => {
-    // console.log({ metric });
+    // analytics eventually
   });
   return <></>;
 };
