@@ -40,11 +40,44 @@
       text-align: center;
     }
 
+    > div[data-project] {
+      width: min(1024px, 95%);
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      padding-block: 1rem;
+
+      @include responsive("mobile") {
+        flex-flow: column nowrap;
+      }
+
+      > img {
+        @include responsive("mobile") {
+          margin-bottom: 10px;
+        }
+        border: 2px solid c.$cambridge_blue;
+        border-radius: 8px;
+      }
+      > main {
+        margin-left: 24px;
+        h2 {
+          margin-bottom: 0;
+        }
+      }
+      * {
+        text-align: left;
+      }
+      &:not(:last-of-type) {
+        border-bottom: 1px solid c.$cambridge_blue;
+      }
+    }
+
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     box-sizing: content-box;
+    max-width: 824px;
 
     *:not(p):has(+ p) {
       margin-bottom: 1.2rem;

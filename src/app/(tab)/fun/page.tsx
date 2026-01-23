@@ -1,10 +1,33 @@
 "use client";
 import { NextPage } from "next/types";
 import Markdown from "@/mdx/fun.mdx";
-import { Suspense, ViewTransition } from "react";
+import { ComponentProps, Suspense, ViewTransition } from "react";
 import styles from "./fun.module.scss";
 import tabStyles from "../tab.module.scss";
 import usePageStore from "@/stores/page";
+import Image from "next/image";
+interface ProjectProps {
+  imgSrc: string;
+  imgAlt: string;
+  children: React.ReactNode;
+}
+
+const Project = (props: ProjectProps) => {
+  return (
+    <div data-project>
+      <Image src={props.imgSrc} alt={props.imgAlt} width={240} height={135} />
+      <main>{props.children}</main>
+    </div>
+  );
+};
+
+const CustomAnchor = ({ children, ...props }: ComponentProps<"a">) => {
+  return (
+    <a {...props} target="_blank">
+      {children}
+    </a>
+  );
+};
 
 const FunPage: NextPage = () => {
   const pageStore = usePageStore();
@@ -18,7 +41,7 @@ const FunPage: NextPage = () => {
         ].join(" ")}
       >
         <Suspense>
-          <Markdown />
+          <Markdown components={{ Project, a: CustomAnchor }} />
         </Suspense>
       </article>
     </ViewTransition>
