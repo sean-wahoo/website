@@ -218,7 +218,6 @@ const Canvas: React.FC<{
             (a) => a.name === sceneAnimation.name,
           );
           if (!gltfAnimation) {
-            console.log("greedy fuck");
             continue;
           }
           const action = mixer.clipAction(gltfAnimation as THREE.AnimationClip);

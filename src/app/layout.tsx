@@ -11,8 +11,6 @@ import { XMLParser } from "fast-xml-parser";
 import { STAR_FIELDS } from "@/components/lib/utils";
 import { Suspense } from "react";
 import StarsToggle from "@/components/starsWrapper/starsToggle";
-import { useAtom } from "jotai";
-import { starsToggleAtom } from "@/stores/page";
 
 const getStarData = async () => {
   "use cache";
@@ -97,7 +95,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const starData = getStarData(true);
+  const starData = getStarData();
   return (
     <ViewTransitions>
       <html lang="en">
