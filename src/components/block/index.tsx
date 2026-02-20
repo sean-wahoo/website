@@ -2,7 +2,8 @@
 import styles from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import { useTransitionRouter } from "next-view-transitions";
-import usePageStore from "@/stores/page";
+import usePageStore, { pageStoreAtom } from "@/stores/page";
+import { useAtom } from "jotai";
 
 const Block: React.FC<{
   text?: string;
@@ -64,12 +65,16 @@ const Block: React.FC<{
       }
     }
   });
-  const pageStore = usePageStore((state) => state);
+  const [pageStore, setPageStore] = useAtom(pageStoreAtom);
 
   const onClick: React.MouseEventHandler = () => {
     if (clickable && href) {
-      pageStore.setPreviousPage("/");
-      router.push(href);
+      if (href.includes("blog")) {
+        window.location.href = href;
+      } else {
+        setPageStore("/");
+        router.push(href);
+      }
     }
   };
   return (

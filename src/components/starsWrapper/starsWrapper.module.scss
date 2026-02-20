@@ -79,3 +79,48 @@
     opacity: 0.2;
   }
 }
+
+.stars_toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  display: flex;
+  flex-flow: row nowrap;
+  font-size: 0.7rem;
+  align-items: center;
+
+  > input[type="checkbox"] {
+    appearance: none;
+    width: 40px;
+    height: 20px;
+    background-color: c.$night;
+    padding: 2px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &::before {
+      content: "󰓎";
+      color: c.$fg;
+      font-family: var(--font-iosevka);
+      margin-inline: 8px;
+      transition: 0.2s all ease;
+    }
+    &.stars_off::before {
+      scale: 0.6 0.6;
+      color: c.$cambridge_blue;
+      opacity: 0.8;
+    }
+    &::after {
+      content: "󰓑";
+      color: c.$light_coral;
+      font-family: var(--font-iosevka);
+      margin-inline: 8px;
+      transition: 0.2s all ease;
+    }
+    &.stars_on::after {
+      scale: 0.6 0.6;
+      color: c.$cambridge_blue;
+      opacity: 0.8;
+    }
+  }
+}

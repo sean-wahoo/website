@@ -9,6 +9,26 @@ const nextConfig: NextConfig = {
     viewTransition: true,
     mdxRs: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: "/blog",
+        destination: `${process.env.BLOG_URL}/blog`,
+      },
+      {
+        source: "/blog/:path+",
+        destination: `${process.env.BLOG_URL}/blog/:path+`,
+      },
+      {
+        source: "/blog-static/:path+",
+        destination: `${process.env.BLOG_URL}/blog-static/:path+`,
+      },
+      {
+        source: "/blog/images/:path*",
+        destination: `${process.env.BLOG_URL}/blog/images/:path*`,
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({});

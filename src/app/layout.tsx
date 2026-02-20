@@ -4,12 +4,15 @@ import "@/styling/globals.scss";
 import styles from "./page.module.scss";
 import localFont from "next/font/local";
 import { ViewTransitions } from "next-view-transitions";
-import StarsWrapper from "@/components/starsWrapper/starsWrapper";
+import StarsWrapper from "@/components/starsWrapper";
 import WebVitals from "@/components/lib/web-vitals";
 import Socials from "@/components/socials/socials";
 import { XMLParser } from "fast-xml-parser";
 import { STAR_FIELDS } from "@/components/lib/utils";
 import { Suspense } from "react";
+import StarsToggle from "@/components/starsWrapper/starsToggle";
+import { useAtom } from "jotai";
+import { starsToggleAtom } from "@/stores/page";
 
 const getStarData = async () => {
   "use cache";
@@ -78,6 +81,12 @@ const cozetteFont = localFont({
   display: "swap",
 });
 
+const iosevkaFont = localFont({
+  src: "../../public/fonts/IosevkaNerdFont-Regular.ttf",
+  display: "swap",
+  variable: "--font-iosevka",
+});
+
 export const metadata: Metadata = {
   title: "SEAN",
   description: "profesional devloper",
@@ -88,18 +97,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const starData = getStarData();
+  const starData = getStarData(true);
   return (
     <ViewTransitions>
       <html lang="en">
         <body
-          className={[funnelSans.variable, funnelDisplay.variable].join(" ")}
+          className={[
+            funnelSans.variable,
+            funnelDisplay.variable,
+            iosevkaFont.variable,
+          ].join(" ")}
         >
           <WebVitals />
           <Suspense>
             <StarsWrapper starData={starData} />
           </Suspense>
           <main className={[styles.layout, cozetteFont.className].join(" ")}>
+            <StarsToggle />
             {children}
           </main>
           <footer className={styles.socials}>

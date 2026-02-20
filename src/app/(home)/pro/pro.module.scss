@@ -1,0 +1,22 @@
+@use "@/styling/responsive.scss" as *;
+@use "sass:map";
+
+.pro_page {
+  > div.has_canvas {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    margin: 1rem auto 0;
+
+    > :not(canvas) {
+      flex: 1 1 50%;
+      order: 0;
+      @include responsive("mobile") {
+        order: 1;
+      }
+    }
+  }
+}

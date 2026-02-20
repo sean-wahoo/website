@@ -13,6 +13,7 @@ const Home: NextPage = () => {
           clickable={true}
           href="/pro"
         />
+        <Block text="blog stuff" id="blog" clickable={true} href="/blog" />
         <Block text="fun stuff" id="fun" clickable={true} href="/fun" />
       </section>
     </ViewTransition>

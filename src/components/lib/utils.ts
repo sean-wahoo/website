@@ -1,3 +1,7 @@
+export const c = (...styles: string[]) => {
+  return styles.join(" ");
+};
+
 export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
   func: F,
   time: number,
