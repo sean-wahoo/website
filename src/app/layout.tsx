@@ -1,3 +1,4 @@
+import Analytics from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Funnel_Sans, Funnel_Display } from "next/font/google";
 import "@/styling/globals.scss";
@@ -98,6 +99,7 @@ export default function RootLayout({
   const starData = getStarData();
   return (
     <ViewTransitions>
+      <Analytics />
       <html lang="en">
         <body
           className={[
