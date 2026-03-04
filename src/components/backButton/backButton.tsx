@@ -1,7 +1,7 @@
 "use client";
 import { useTransitionRouter } from "next-view-transitions";
 import styles from "./backButton.module.scss";
-import homeStyles from "@/app/(home)/home.module.scss";
+import tabsStyles from "@/app/(tabs)/tabs.module.scss";
 
 const BackButton = () => {
   const router = useTransitionRouter();
@@ -11,7 +11,7 @@ const BackButton = () => {
   return (
     <button
       onClick={onClick}
-      className={[styles.back_button, homeStyles.animate].join(" ")}
+      className={[styles.back_button, tabsStyles.animate].join(" ")}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

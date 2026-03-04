@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Funnel_Sans, Funnel_Display } from "next/font/google";
 import "@/styling/globals.scss";
@@ -99,7 +100,6 @@ export default function RootLayout({
   const starData = getStarData();
   return (
     <ViewTransitions>
-      <Analytics />
       <html lang="en">
         <body
           className={[
@@ -119,6 +119,8 @@ export default function RootLayout({
           <footer className={styles.socials}>
             <Socials />
           </footer>
+          <Analytics />
+          <SpeedInsights />
         </body>
       </html>
     </ViewTransitions>

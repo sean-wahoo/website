@@ -1,9 +1,8 @@
 import styles from "./page.module.scss";
 import { ViewTransition } from "react";
 import Block from "@/components/block";
-import { NextPage } from "next";
 
-const Home: NextPage = () => {
+const Page = () => {
   return (
     <ViewTransition>
       <section className={styles.button_section}>
@@ -20,4 +19,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Page;

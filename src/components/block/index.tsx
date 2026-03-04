@@ -2,8 +2,8 @@
 import styles from "./index.module.scss";
 import { useEffect, useRef } from "react";
 import { useTransitionRouter } from "next-view-transitions";
-import usePageStore, { pageStoreAtom } from "@/stores/page";
-import { useAtom } from "jotai";
+import { pageStoreAtom } from "@/stores/page";
+import { useSetAtom } from "jotai";
 
 const Block: React.FC<{
   text?: string;
@@ -65,7 +65,7 @@ const Block: React.FC<{
       }
     }
   });
-  const [pageStore, setPageStore] = useAtom(pageStoreAtom);
+  const setPageStore = useSetAtom(pageStoreAtom);
 
   const onClick: React.MouseEventHandler = () => {
     if (clickable && href) {

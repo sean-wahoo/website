@@ -1,5 +1,5 @@
 "use client";
-import styles from "./home.module.scss";
+import styles from "./tabs.module.scss";
 import Block from "@/components/block";
 import { ViewTransition } from "react";
 import BackButton from "@/components/backButton/backButton";

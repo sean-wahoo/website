@@ -2,7 +2,6 @@
 import { useAtom } from "jotai";
 import styles from "./starsWrapper.module.scss";
 import { starsToggleAtom } from "@/stores/page";
-import { c } from "../lib/utils";
 import { MouseEventHandler } from "react";
 const StarsToggle = () => {
   const [showStars, setShowStars] = useAtom(starsToggleAtom);
