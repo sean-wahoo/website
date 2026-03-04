@@ -1,4 +1,4 @@
-import Analytics from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Funnel_Sans, Funnel_Display } from "next/font/google";
 import "@/styling/globals.scss";
