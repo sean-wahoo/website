@@ -11,6 +11,8 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^15.5.12",
+    "@tanstack/query-core": "^5.95.0",
+    "@tanstack/react-query-devtools": "^5.95.0",
     "@types/mdx": "^2.0.13",
     "@types/three": "^0.180.0",
     "@vercel/analytics": "^1.6.1",
