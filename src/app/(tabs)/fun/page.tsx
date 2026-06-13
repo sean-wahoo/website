@@ -64,7 +64,7 @@ const FunPage = () => {
               <Link href="https://github.com/sean-wahoo/blerg">blerg</Link>
             </h2>
             <h4>
-              <Link href="https://seanline.dev/blog">visit!</Link>
+              <Link href="https://blog.seanline.dev">visit!</Link>
             </h4>
             <span className={styles.desc}>
               cute little blog (blerg) because obviously i'd make one.
