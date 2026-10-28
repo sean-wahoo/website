@@ -54,16 +54,22 @@ const getStarData = async () => {
   url.searchParams.append("Radius.unit", "deg");
   url.searchParams.append("CooFrame", "ICRS");
 
-  const rawResponse = await fetch(url, { cache: "force-cache" });
-  const xmlString = await rawResponse.text();
+  try {
+    const rawResponse = await fetch(url, { cache: "force-cache" });
+    const xmlString = await rawResponse.text();
 
-  const parsePromise = new Promise((resolve) => {
-    const parsedObj = parser.parse(xmlString);
-    if (parsedObj) {
-      resolve(parsedObj);
-    }
-  });
-  return await parsePromise;
+    const parsePromise = new Promise((resolve, reject) => {
+      const parsedObj = parser.parse(xmlString);
+      if (parsedObj) {
+        resolve(parsedObj);
+      } else {
+        reject(new Error("Failed to parse XML\n" + xmlString));
+      }
+    });
+    return await parsePromise;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 const funnelSans = Funnel_Sans({
