@@ -36,7 +36,9 @@ const getStarData = async () => {
     },
   });
 
-  const url = new URL("https://simbad.cds.unistra.fr/simbad/sim-coo");
+  const url = new URL(
+    process.env.STARS_ENDPOINT ?? "https://simbad.cfa.harvard.edu/simbad/sim-coo",
+  );
   url.searchParams.append("output.format", "VOTable");
   url.searchParams.append("output.max", "300");
   url.searchParams.append("obj.pmsel", "off");
