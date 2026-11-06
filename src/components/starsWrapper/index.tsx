@@ -51,8 +51,8 @@ const StarsWrapper: React.FC<
     }
     const parsedStarResponse = parseVOTableData(
       data as TableInterface,
-      height,
       width,
+      height,
     );
     let starsToSet = [];
     let i = 0;

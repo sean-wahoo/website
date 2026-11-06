@@ -78,6 +78,7 @@ export interface TableInterface {
   [key: string]: any;
 }
 export const RADIUS = 12;
+
 export function starToPixel(
   ra: number,
   dec: number,
@@ -89,36 +90,49 @@ export function starToPixel(
   fovDeg: number,
 ): [number, number] | null {
   const degToRad = Math.PI / 180;
+
   const raRad = ra * degToRad;
   const decRad = dec * degToRad;
   const centerRaRad = centerRa * degToRad;
   const centerDecRad = centerDec * degToRad;
 
-  // Direction cosine
-  const cosC =
-    Math.sin(centerDecRad) * Math.sin(decRad) +
-    Math.cos(centerDecRad) * Math.cos(decRad) * Math.cos(raRad - centerRaRad);
+  const deltaRa = raRad - centerRaRad;
 
-  // Star is behind or too far from center
-  if (cosC <= 0 || Math.acos(cosC) > radiusDeg * degToRad) return null;
+  // Spherical angular separation
+  const cosC = Math.max(
+    -1,
+    Math.min(
+      1,
+      Math.sin(centerDecRad) * Math.sin(decRad) +
+        Math.cos(centerDecRad) * Math.cos(decRad) * Math.cos(deltaRa),
+    ),
+  );
 
-  // Gnomonic (tangent plane) projection
-  const x = (Math.cos(decRad) * Math.sin(raRad - centerRaRad)) / cosC;
+  const angularDistance = Math.acos(cosC);
+
+  if (cosC <= 0 || angularDistance > radiusDeg * degToRad) {
+    return null;
+  }
+
+  // Gnomonic projection
+  const x = (Math.cos(decRad) * Math.sin(deltaRa)) / cosC;
+
   const y =
     (Math.cos(centerDecRad) * Math.sin(decRad) -
-      Math.sin(centerDecRad) *
-        Math.cos(decRad) *
-        Math.cos(raRad - centerRaRad)) /
+      Math.sin(centerDecRad) * Math.cos(decRad) * Math.cos(deltaRa)) /
     cosC;
 
-  // Scale to FOV and pixels
-  const scale = width / (fovDeg * degToRad); // pixels per radian
-  const xPix = width / 2 + x * scale;
-  const yPix = height / 2 - y * scale; // Y inverted
+  // Exact gnomonic field-of-view scaling
+  const scale = width / (2 * Math.tan((fovDeg * degToRad) / 2));
 
-  return xPix >= 0 && xPix <= width && yPix >= 0 && yPix <= height
-    ? [xPix, yPix]
-    : null;
+  const xPix = width / 2 + x * scale;
+  const yPix = height / 2 - y * scale;
+
+  if (xPix < 0 || xPix > width || yPix < 0 || yPix > height) {
+    return null;
+  }
+
+  return [xPix, yPix];
 }
 export const parseVOTableData = (
   table: TableInterface,
@@ -153,17 +167,18 @@ export const parseVOTableData = (
       RADIUS,
       centerPos.a,
       centerPos.d,
-      window.visualViewport?.width as number,
-      window.visualViewport?.height as number,
+      window.innerWidth,
+      window.innerHeight,
       1,
     );
 
-    starEntry.x = convertedCoordinatesOther?.[0];
-    starEntry.y = convertedCoordinatesOther?.[1];
-
-    if (starEntry.x === null || starEntry.y === null) {
+    if (!convertedCoordinatesOther) {
       continue;
     }
+
+    starEntry.x = convertedCoordinatesOther[0];
+    starEntry.y = convertedCoordinatesOther[1];
+
     finalArr.push(starEntry);
   }
   return finalArr;
